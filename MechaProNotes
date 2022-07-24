@@ -1,0 +1,52 @@
+
+code für ersten test
+https://stackoverflow.com/questions/28476117/easy-openstreetmap-tile-displaying-for-python
+
+
+Overpass wizard: 
+https://wiki.openstreetmap.org/wiki/Overpass_turbo/Wizard
+
+draw points:
+https://wrobell.dcmod.org/geotiler/usage.html#rendering-map
+
+get coords:
+https://help.openstreetmap.org/questions/78529/best-way-to-get-coordinates-of-each-node-of-a-way
+
+elevation:
+https://open-elevation.com/
+https://stackoverflow.com/questions/65748099/open-elevation-api-for-python
+https://github.com/Jorl17/open-elevation/blob/master/docs/api.md
+
+https://www.opentopodata.org/
+
+better overpy:
+https://github.com/mvexel/overpass-api-python-wrapper
+
+draw lot of lines:
+https://matplotlib.org/stable/gallery/shapes_and_collections/line_collection.html
+
+read gpx:
+https://pypi.org/project/gpxpy/
+
+GPX Format:
+https://de.wikipedia.org/wiki/GPS_Exchange_Format
+
+Distance:
+geopy ???
+geopandas
+https://gis.stackexchange.com/questions/416341/finding-distance-from-point-to-linestring-in-meters-using-python
+
+
+Genauigkeit:
+https://www.gps.gov/technical/ps/2020-SPS-performance-standard.pdf
+=< 7.0 m 95%
+
+Get Ip:
+https://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib
+
+Topokarte:
+https://de-be.topographic-map.com/maps/7jev/Baden-W%C3%BCrttemberg/
+
+
+QueryLimits:
+https://wiki.openstreetmap.org/wiki/Overpass_API

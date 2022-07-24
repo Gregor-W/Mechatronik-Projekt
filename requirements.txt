@@ -1,0 +1,10 @@
+geopy==2.2.0
+geotiler==0.14.6
+gpxpy==1.0.0
+matplotlib==3.5.1
+mpld3==0.5.8
+numpy==1.21.5
+overpass==0.7
+overpy==0.6
+pandas==1.4.2
+Shapely==1.8.2
