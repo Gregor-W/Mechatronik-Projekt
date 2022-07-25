@@ -48,7 +48,8 @@ else:
 
 
 print("Found {} Linestrings".format(len(ways_h.linestrings)))
-    
+
+# make Map
 disp_map = Map(bbox=bbox)
 matching = Matching(ways_h, gps_h)
 
@@ -101,4 +102,3 @@ html3 = mpld3.fig_to_html(fig3)
 
 # serve joined html to browser
 serve(html1+html2+html3, ip=get_ip(), port=8889)
-#serve(html1+html2+html3, ip='192.168.178.31', port=8889)

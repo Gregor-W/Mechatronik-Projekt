@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<gpx version="1.1" creator="GPS-Tracker Pro" xmlns="http://www.topografix.com/GPX/1/1"> 
+<metadata>
+<name>Test5</name>
+</metadata>
+<trk>
+<name>Test5</name>
+<trkseg>
+<trkpt lat="48.448867" lon="8.915861">
+<ele>451.515541</ele>
+<time>2022-07-25T19:57:16Z</time>
+</trkpt>
+<trkpt lat="48.449335" lon="8.916254">
+<ele>487.310047</ele>
+<time>2022-07-25T19:57:19Z</time>
+</trkpt>
+<trkpt lat="48.449135" lon="8.916015">
+<ele>451.970081</ele>
+<time>2022-07-25T19:57:21Z</time>
+</trkpt>
+<trkpt lat="48.449043" lon="8.915993">
+<ele>451.854603</ele>
+<time>2022-07-25T19:57:26Z</time>
+</trkpt>
+<trkpt lat="48.448950" lon="8.916018">
+<ele>452.992420</ele>
+<time>2022-07-25T19:57:33Z</time>
+</trkpt>
+<trkpt lat="48.448950" lon="8.915880">
+<ele>451.688465</ele>
+<time>2022-07-25T19:57:57Z</time>
+</trkpt>
+</trkseg>
+</trk>
+</gpx>

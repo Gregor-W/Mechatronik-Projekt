@@ -76,38 +76,19 @@ class Ways_Handler:
 url_opentopodata = 'https://api.opentopodata.org/v1/eudem25m' # max 100
 url_openelevation = 'https://api.open-elevation.com/api/v1/lookup'
 
+#returning elevation in m from lat, long
 def get_elevation_list(points, url):
-    '''
-        script for returning elevation in m from lat, long
-    '''
     if points is None: return None
-    
+    # reduce to 100 points
     points = reduce_to(100, points)
-        
-    #if len(points) > 100:
-        # split into groups of 100
-        #n = 100
-        #point_lists = [points[i:i + n] for i in range(0, len(points), n)]
-        #all_elevation = pd.Series()
-        #for ps in point_lists:
-        #    new_elevations = get_elevation_list(ps, url)
-        #    if new_elevations is None:
-        #        print("could not get all elevations")
-        #        return None
-        #    all_elevation = pd.concat([all_elevation, new_elevations],\
-        #                              ignore_index=True)
-        #return all_elevation
-
+    # build query
     query = f'?locations='
 
     # build query, lat/lon switched
     for p in points[:-1]:
         query += f'{p.y},{p.x}|'
-    
     query += f'{points[-1].y},{points[-1].x}'
-
     full_query = (url + query)
-    
     print("Elevation-Query: {}".format(full_query))
     
     # Request with a timeout for slow responses
@@ -124,6 +105,7 @@ def get_elevation_list(points, url):
 def reduce_to(x, l):
     i = 0
     length = len(l)
+    # while to big
     while length > x:
         i += 1
         length = len(l) / i

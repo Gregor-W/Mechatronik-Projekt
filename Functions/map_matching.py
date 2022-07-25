@@ -26,14 +26,14 @@ class Matching:
     df = pd.DataFrame()
     max_dist_mm = 15
     
-    
+    # Get all data in init
     def __init__(self, wh, gps_handler):
         self.df['points'] = gps_handler.points
         self.df['time']   = pd.to_datetime(gps_handler.times)
         self.df['height'] = gps_handler.height
         self.ways_handler = wh
 
-    # Get distance between Linestring and Coords in meters
+    # Get distance and closest point between Linestring and Coords in meters
     @staticmethod
     def get_ls_dist(ls, point):
         np = nearest_points(ls, point)
@@ -48,7 +48,7 @@ class Matching:
         dist = geodesic((p0.x, p0.y), (p1.x, p1.y)).m
         return dist
         
-    # Smarter matching
+    # Smarter matching, fixing some wrong matches
     @staticmethod
     def find_best_ls(df):
         
@@ -65,6 +65,7 @@ class Matching:
         # get distance to other linestrings
         prev_dist = None
         next_dist = None
+        # distance to other possible linestrings
         for e, ls in enumerate(linestring_ids):
             if prev_i == ls:
                 prev_dist = distance[e]
@@ -74,30 +75,21 @@ class Matching:
         if next_dist is None and prev_dist is None:
             return first_i
 
-        # print("changed linestring")
-        # map to different linestring
+        # map to closest different linestring
         if next_dist is None and prev_dist < Matching.max_dist_mm:
             return prev_i
         if prev_dist is None and next_dist < Matching.max_dist_mm:
             return next_i
-
         if prev_dist <= next_dist and prev_dist < Matching.max_dist_mm:
             return prev_i
         if next_dist < prev_dist and next_dist < Matching.max_dist_mm:
             return next_i
         
-        print(first_i)
-        print(prev_i)
-        print(next_i)
-        print(prev_dist)
-        print(next_dist)
-        print(linestring_ids)
-        
     # get map matched point with dataframe
     @staticmethod
     def select_points(df):
         i = np.where(df['linestring_ids'] == df['second_pass'])[0]
-        
+        # check if point was mapmatched (could be to far from any way)
         if df['distance'][i] < Matching.max_dist_mm:
             return df['mm_points'][i][0]
         else:
@@ -123,6 +115,7 @@ class Matching:
     def correct_dist(df):
         p = df['points']
         mm_ps = df['mm_points']
+        # calc correct
         new_dist = np.array([Matching.get_dist_m(p, p2) for p2 in mm_ps])
         return new_dist
     
@@ -151,7 +144,7 @@ class Matching:
             
             # get index in array for new distance
             idx = closest_dist.searchsorted(dist)
-            # insert data into arrays
+            # insert data into arrays, depending on new position
             if idx < 4:
                 for l, d in zip(lists, data):
                     l[:] = np.concatenate((l[:idx],\
@@ -171,13 +164,12 @@ class Matching:
         self.df['distance'],\
         self.df['mm_points'] = zip(*(self.df['points'].apply(self.get_closest_linestrings)))
         
-        
+        # correct the distances
         self.df['distance'] = self.df.apply(self.correct_dist, axis=1)
         end = time.time()
         print("time for mm: {}".format(end - start))
         
-        
-        pd.set_option('display.max_colwidth', None)
+        #pd.set_option('display.max_colwidth', None)
         #print(self.df)
         
         # first pass, get closest distance
@@ -202,11 +194,11 @@ class Matching:
         
     # calculate speed on dataframe
     def calc_speed(self, column):
-        # shift columns for speed calcs
+        # shift point columns for speed calcs
         self.df['current_point'] = self.df[column]
         self.df['prev_point'] = self.df[column].shift(1, fill_value=np.nan)
         self.df['next_point'] = self.df[column].shift(-1, fill_value=np.nan)
-        
+        # shift time columns for speed calcs
         first = self.df['time'].iloc[0]
         self.df['prev_time']  = self.df['time'].shift(1, fill_value=first)
         last = self.df['time'].iloc[-1]
@@ -220,7 +212,7 @@ class Matching:
         self.df['speed'] = self.df.apply(self.get_speed, axis=1)
         return self.df['speed']
     
-    # create linestrings between point and mmed point
+    # create linestrings between point and mmed point for visualisation
     def get_matched_ls(self):
         plot_conns = list()
         for p, p2 in zip(self.df['points'], self.df['matched_point']):
@@ -231,27 +223,4 @@ class Matching:
     def get_matched_p(self):
         return self.df['matched_point'].tolist()
 
-class Linestring_Boxes:
-    polys = list()
-    ls_box_list = list()
-    linestrings = None
-    
-    def make_boxes(self, box):
-        m = round((box[0] - box[2]) / 0.005)
-        n = round((box[1] - box[3]) / 0.005)
-        
-        lon_coords = np.linspace(box[0], box[2], m)
-        lat_coords = np.linspace(box[1], box[3], n)
-        
-        for i in range(m):
-            for j in range(n):
-                self.polys.append(Polygon([(lon_coords[m],     lat_coords[n]),
-                                           (lon_coords[m + 1], lat_coords[n]),
-                                           (lon_coords[m],     lat_coords[n + 1]),
-                                           (lon_coords[m + 1], lat_coords[n + 1])]))
-        
-    def get_linestrings(self):
-        for poly in self.polys:
-            for ls in linestrings:
-                self.linestring_list.append(self.get_ls(poly))
         

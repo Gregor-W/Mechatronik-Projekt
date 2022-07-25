@@ -73,12 +73,14 @@ class Map:
         
     # returns map with features as plt figure
     def get_fig(self):
+        # get map image
         image = geotiler.render_map(self.display_map) 
+        # add lines
         line_segments = LineCollection(self.linestrings,\
                                        color=self.colors,\
                                        linestyle='solid',
                                        linewidths=5)
-        
+        # make figure
         fig = plt.figure()
         #plt.scatter(self.x, self.y, c='red', edgecolor='none', s=30, alpha=0.9, zorder=10)
         plt.scatter(self.x, self.y, c='red', edgecolor='none', s=0.5, alpha=0.9, zorder=10)
